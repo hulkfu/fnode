@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+server = File.expand_path(File.join(__dir__, '..', 'lib', 'fnode', 'fnode.rb'))
+puts server
+system "ruby #{server}"

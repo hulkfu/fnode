@@ -1,1 +1,1 @@
-require_relative "lib/fnode"
+require_relative "fnode/server"

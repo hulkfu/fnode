@@ -1,11 +1,13 @@
 require 'logging'
 require 'fileutils'
 require 'singleton'
+require 'yaml'
 
 
 module FNode
   class Node
     include Singleton
+    CONFIG_FILE = "config.yml"
     FUZZINGS_FOLDER = "fuzzings"
     ATTRS = %w(name ip port os state pid test_app test_file_path admin_ip admin_port)
 
@@ -13,12 +15,31 @@ module FNode
       attr_accessor(attr)
     end
 
-    def set_state (new_state)
+    def load_attrs(yml_file=CONFIG_FILE)
+      attrs = YAML.load_file(yml_file)
+      ATTRS.each do |attr|
+        self.public_send("#{attr}=", attrs[attr])
+      end
+    end
+
+    def dump_attrs(yml_file=CONFIG_FILE)
+      attrs = {}
+      ATTRS.each do |attr|
+        attrs.store attr, self.public_send(attr)
+      end
+
+      open(yml_file, "w") do |f|
+        f << attrs.to_yaml
+      end
+    end
+
+    def set_state(new_state)
       state = new_state
       @log.info "Change state: #{state}"
     end
 
     def initialize
+      load_attrs CONFIG_FILE
       setup_logger
     end
 

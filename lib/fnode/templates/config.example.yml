@@ -1,0 +1,11 @@
+---
+name: name
+ip: 127.0.0.1
+port: 4567
+os: Linux
+state: closed
+pid:
+test_app: app
+test_file_path: "/path/to/file"
+admin_ip: 127.0.0.1
+admin_port: 3000

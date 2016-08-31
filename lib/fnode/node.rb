@@ -1,9 +1,11 @@
 require 'logging'
 require 'fileutils'
+require 'singleton'
 
 
 module FNode
   class Node
+    include Singleton
     FUZZINGS_FOLDER = "fuzzings"
     ATTRS = %w(name ip port os state pid test_app test_file_path admin_ip admin_port)
 
@@ -59,7 +61,7 @@ module FNode
     end
 
     def self.test
-      n = Node.new
+      n = Node.instance
       n.test_app = "pluma"
       n.test_file_path = "/tmp/fuzz.txt"
       n.run_fuzz_test

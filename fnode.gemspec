@@ -3,7 +3,7 @@ $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 require 'fnode/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'FNode'
+  s.name        = 'fnode'
   s.version     = FNode::VERSION
   s.licenses    = ['MIT']
   s.date        = '2016-08-29'

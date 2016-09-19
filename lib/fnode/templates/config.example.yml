@@ -5,6 +5,7 @@ port: 4567
 os: Linux
 state: closed
 pid:
+test_task_id:
 test_app: app
 test_file_path: "/path/to/file"
 admin_ip: 127.0.0.1

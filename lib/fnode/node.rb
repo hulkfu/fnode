@@ -2,6 +2,7 @@ require 'logging'
 require 'fileutils'
 require 'singleton'
 require 'yaml'
+require 'rest-client'
 
 
 module FNode
@@ -9,10 +10,15 @@ module FNode
     include Singleton
     CONFIG_FILE = "config.yml"
     FUZZINGS_FOLDER = "fuzzings"
-    ATTRS = %w(name ip port os state pid test_app test_file_path admin_ip admin_port)
+    ATTRS = %w(name ip port os state pid test_task_id test_app test_file_path admin_ip admin_port)
 
     ATTRS.each do |attr|
       attr_accessor(attr)
+    end
+
+    # copy the example config file into current running folder
+    def init_config_file(yml_file=CONFIG_FILE)
+      FileUtils.cp File.expand_path("templates/config.example.yml", __dir__), yml_file, verbose: true
     end
 
     def load_attrs(yml_file=CONFIG_FILE)
@@ -74,11 +80,9 @@ module FNode
     end
 
     def get_server_file
-      file = Tempfile.new("templete_file")
-      file.binmode
-      file << open("http://#{admin_ip}:#{admin_port}/tasks/#{task.id}/templete_file").read
-      file.close
-      file
+      File.open("templete_file", 'w') do |f|
+        f.write RestClient.get("http://#{admin_ip}:#{admin_port}/tasks/#{test_task_id}/templete_file").to_s
+      end
     end
 
     def self.test

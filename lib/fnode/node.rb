@@ -94,6 +94,8 @@ module FNode
       n.stop_fuzz_test
     end
 
+    
+
     private
       def setup_logger
         require 'fileutils'
